@@ -40,7 +40,7 @@ export class AppService {
   async fetchOrders() {
     const response = await this.client.get({
       path: 'orders',
-      query: { status: 'any' },
+      query: { status: 'any', limit: 3, order: 'line_items_count DESC' },
     });
 
     return {
@@ -51,12 +51,15 @@ export class AppService {
   }
 
   async fetchCustomer() {
-    const response = await this.client.get({ path: 'customers' });
+    const response = await this.client.get({
+      path: 'customers',
+      query: { limit: 3, order: 'total_spent DESC' },
+    });
 
     return {
       success: true,
       message: 'Customer data retrieved successfully',
-      data: response.body,
+      data: response.body.customers,
     };
   }
 
